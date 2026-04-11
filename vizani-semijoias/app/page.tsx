@@ -209,22 +209,22 @@ export default function Home() {
                 <div style={{ padding: '14px 14px 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <h6 style={{ color: '#3d3020', fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{p.nome}</h6>
                   <p style={{ color: '#8B6914', fontSize: 19, fontWeight: 700, marginBottom: 12, marginTop: 'auto' }}>{p.preco}</p>
-                  <div style={{ display: 'flex', gap: 8 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <button
                       onClick={() => setModal(p)}
                       style={{
-                        flex: 1, padding: '8px', borderRadius: 8,
+                        width: '100%', padding: '8px', borderRadius: 8,
                         border: '1px solid #C4952A', background: '#fff',
                         color: '#8B6914', fontSize: 12, cursor: 'pointer',
                         fontWeight: 600, letterSpacing: 0.5,
                       }}
                     >
-                      Detalhes
+                      Ver Detalhes
                     </button>
                     <button
                       onClick={() => abrirWA(p.nome)}
                       style={{
-                        flex: 1, padding: '8px', borderRadius: 8,
+                        width: '100%', padding: '8px', borderRadius: 8,
                         border: 'none', background: '#25D366',
                         color: '#fff', fontSize: 12, cursor: 'pointer',
                         fontWeight: 600, letterSpacing: 0.5,
