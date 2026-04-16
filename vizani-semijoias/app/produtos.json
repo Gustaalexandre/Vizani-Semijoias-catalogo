@@ -15,16 +15,9 @@
         "preco": "R$ 88,00",
         "descricao": "A essência do brilho banhado à prata. Uma pulseira de elos texturizados com design exclusivo, criada para refletir a luz de forma única. Com acabamento banhado em prata de alta qualidade, esta peça versátil é ideal para usar sozinha ou compor mixes repletos de personalidade e brilho contínuo."
     },
+   
     {
         "id": "3",
-        "nome": "Pulseira Golden Twist Lux",
-        "categoria": "pulseira",
-        "foto": "/produtos/GoldenTwistLux.jpeg",
-        "preco": "R$ 52,00",
-        "descricao": "Textura luxuosa e presença marcante. Esta pulseira apresenta um trabalho de torção meticuloso que confere volume e um brilho tridimensional irresistível. Com um banho de ouro impecável, é o acessório robusto e feminino que transforma qualquer visual com sofisticação e luxo."
-    },
-    {
-        "id": "4",
         "nome": "Pulseira Amoréa Charm",
         "categoria": "pulseira",
         "foto": "/produtos/AmoreaCharm.jpeg",
@@ -32,7 +25,7 @@
         "descricao": "Romantismo e leveza no pulso. Uma pulseira delicada que intercala mini corações dourados com pontos de luz de zircônia cristal. O design leve e o brilho sutil criam um efeito encantador, tornando-a a peça ideal para adicionar um toque de afeto e brilho ao dia a dia."
     },
     {
-        "id": "5",
+        "id": "4",
         "nome": "Brinco Divina Spark Hoops",
         "categoria": "brinco",
         "foto": "/produtos/DivinaSparkHoops.jpeg",
@@ -40,7 +33,7 @@
         "descricao": "O brilho máximo da argola clássica. Indispensáveis no porta-joias, estas argolas trazem três fileiras de zircônias cravadas à mão para um brilho contínuo e impactante. Com fechamento prático em click, unem o conforto diário à sofisticação necessária para qualquer evento."
     },
     {
-        "id": "6",
+        "id": "5",
         "nome": "Brinco Aura Flor De Luz",
         "categoria": "brinco",
         "foto": "/produtos/AuraFlorDeLuz.jpeg",
@@ -48,7 +41,7 @@
         "descricao": "Delicadeza que ilumina o semblante. Brincos stud em formato de trevo com uma moldura dourada sutil que contorna uma zircônia central de lapidação brilhante. Um acessório discreto e elegante, perfeito para quem aprecia joias que transmitem pureza, sorte e sofisticação atemporal."
     },
     {
-        "id": "7",
+        "id": "6",
         "nome": "Brinco Borboleta Éclat",
         "categoria": "brinco",
         "foto": "/produtos/BorboletaEclat.jpeg",
