@@ -1,0 +1,112 @@
+/* NAVBAR BASE */
+.admin-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 253, 245, 0.85);
+  border-bottom: 1px solid #e8d5a3;
+}
+
+/* LAYOUT */
+.nav-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+/* ESQUERDA */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.admin-logo {
+  height: 55px;
+  cursor: pointer;
+}
+
+/* CENTRO REAL */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-center h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #8B6914;
+  letter-spacing: 1px;
+}
+
+/* DIREITA */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* BOTÕES */
+.btn-gold {
+  background: linear-gradient(135deg, #8B6914, #C4952A);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: 0.2s;
+}
+
+.btn-gold:hover {
+  filter: brightness(0.9);
+}
+
+.btn-outline-gold {
+  border: 1px solid #e8d5a3;
+  color: #8B6914;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 6px 12px;
+}
+
+/* LINHA */
+.nav-line {
+  height: 2px;
+  background: linear-gradient(90deg,#8B6914,#C4952A,#8B6914);
+}
+
+/* MOBILE AJUSTADOO */
+@media (max-width: 768px) {
+
+  .admin-logo {
+    display: none;
+  }
+
+  .nav-wrapper {
+    padding: 8px 12px;
+  }
+
+  /* 🔥 LIMITA O ESPAÇO DO TÍTULO */
+  .nav-center {
+    width: 60%; /* controla o espaço central */
+    text-align: center;
+  }
+
+  .nav-center h2 {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* se faltar espaço vira ... */
+  }
+
+  /* BOTÕES MENORES */
+  .nav-right button {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+}

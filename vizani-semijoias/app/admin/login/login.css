@@ -1,0 +1,83 @@
+/* FUNDO */
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fdf6e3 0%, #f5e9c4 60%, #faf9f7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* CARD */
+.login-card {
+  background: #fff;
+  border: 1px solid #e8d5a3;
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+/* LOGO */
+.login-logo {
+  height: 70px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+/* TÍTULO */
+.login-title {
+  color: #8B6914;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+/* INPUT PADRÃO OURO */
+.input-gold {
+  border: 1px solid #e8d5a3;
+  background: #fdf6e3;
+  color: #3d3020;
+}
+
+.input-gold:focus {
+  border-color: #C4952A;
+  box-shadow: 0 0 0 0.2rem rgba(196, 149, 42, 0.2);
+}
+
+/* BOTÃO OURO */
+.btn-gold {
+  background: linear-gradient(90deg, #8B6914, #C4952A);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.btn-gold:hover {
+  opacity: 0.9;
+}
+
+.login-error {
+  background: #ffe5e5;
+  color: #b30000;
+  border: 1px solid #ffb3b3;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .login-logo {
+    height: 55px;
+  }
+}
