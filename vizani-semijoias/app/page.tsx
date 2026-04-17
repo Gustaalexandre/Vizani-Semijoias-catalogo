@@ -29,8 +29,8 @@ export default function Home() {
         .select('*')
         .order('criado_em', { ascending: false });
 
-      console.log('DATA:', data);
-      console.log('ERROR:', error);
+      alert(JSON.stringify(data));
+      alert(JSON.stringify(error));
       if (error) console.error(error);
       else setProdutos(data || []);
       setCarregando(false);
