@@ -21,6 +21,10 @@ export default function Home() {
   const [busca, setBusca] = useState<string>('');
   const [modal, setModal] = useState<Produto | null>(null);
   const [carregando, setCarregando] = useState(true);
+  const [zoomAtivo, setZoomAtivo] = useState(false);
+  const [posicao, setPosicao] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [arrastando, setArrastando] = useState(false);
+  const [touchInicio, setTouchInicio] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   useEffect(() => {
     async function carregarProdutos() {
@@ -102,7 +106,7 @@ export default function Home() {
             />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            {[{ key: 'todos', label: 'Todos' }, { key: 'brinco', label: '✦ Brincos' }, { key: 'pulseira', label: '✦ Pulseiras' }].map(({ key, label }) => (
+            {[{ key: 'todos', label: 'Todos' }, { key: 'brinco', label: '✦ Brincos' }, { key: 'pulseira', label: '✦ Pulseiras' }, { key: 'corrente', label: '✦ Corrente' }].map(({ key, label }) => (
               <button key={key} onClick={() => setFiltro(key)} style={{ padding: '8px 16px', borderRadius: 8, border: filtro === key ? '1px solid #8B6914' : '1px solid #e8d5a3', background: filtro === key ? '#8B6914' : '#fff', color: filtro === key ? '#fff' : '#8B6914', fontSize: 13, cursor: 'pointer', fontWeight: filtro === key ? 600 : 400, transition: 'all .2s' }}>
                 {label}
               </button>
@@ -135,7 +139,8 @@ export default function Home() {
             ) : lista.map(p => (
               <div key={p.id} className="col-6 col-md-4 col-lg-3">
                 <div
-                  style={{ background: '#fff', border: '1px solid #e8d5a3', borderRadius: 14, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'transform .2s, box-shadow .2s' }}
+                  onClick={() => setModal(p)}
+                  style={{ background: '#fff', border: '1px solid #e8d5a3', borderRadius: 14, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'transform .2s, box-shadow .2s', cursor: 'pointer' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 32px rgba(139,105,20,0.13)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; }}
                 >
@@ -149,10 +154,16 @@ export default function Home() {
                     <h6 style={{ color: '#3d3020', fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{p.nome}</h6>
                     <p style={{ color: '#8B6914', fontSize: 19, fontWeight: 700, marginBottom: 12, marginTop: 'auto' }}>{p.preco}</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      <button onClick={() => setModal(p)} style={{ width: '100%', padding: '8px', borderRadius: 8, border: '1px solid #C4952A', background: '#fff', color: '#8B6914', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+                      <button
+                        onClick={e => { e.stopPropagation(); setModal(p); }}
+                        style={{ width: '100%', padding: '8px', borderRadius: 8, border: '1px solid #C4952A', background: '#fff', color: '#8B6914', fontSize: 12, cursor: 'pointer', fontWeight: 600 }}
+                      >
                         Ver Detalhes
                       </button>
-                      <button onClick={() => abrirWA(p.nome)} style={{ width: '100%', padding: '8px', borderRadius: 8, border: 'none', background: '#25D366', color: '#fff', fontSize: 12, cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+                      <button
+                        onClick={e => { e.stopPropagation(); abrirWA(p.nome); }}
+                        style={{ width: '100%', padding: '8px', borderRadius: 8, border: 'none', background: '#25D366', color: '#fff', fontSize: 12, cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
+                      >
                         {svgWA(13, 'white')} WhatsApp
                       </button>
                     </div>
@@ -181,19 +192,120 @@ export default function Home() {
 
       {/* Modal */}
       {modal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }} onClick={() => setModal(null)}>
-          <div onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: 18, width: '100%', maxWidth: 420, border: '1px solid #e8d5a3', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
-            <div style={{ position: 'relative', width: '100%', height: 280, background: '#fdf6e3', flexShrink: 0 }}>
-              <Image src={modal.foto_url} alt={modal.nome} fill style={{ objectFit: 'contain' }} unoptimized />
-              <button onClick={() => setModal(null)} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.95)', border: '1px solid #e8d5a3', borderRadius: '50%', width: 32, height: 32, cursor: 'pointer', fontSize: 16, color: '#8B6914', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>✕</button>
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+          onClick={() => { setModal(null); setZoomAtivo(false); }}
+
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#fff', borderRadius: 18, width: '100%', maxWidth: 420, border: '1px solid #e8d5a3', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}
+          >
+            {/* Foto com zoom */}
+            {/* Foto com zoom e arraste */}
+            <div
+              style={{
+                position: 'relative', width: '100%', height: 280,
+                background: '#fdf6e3', flexShrink: 0,
+                overflow: 'hidden',
+                cursor: zoomAtivo ? 'grab' : 'zoom-in',
+              }}
+              onClick={() => { if (!zoomAtivo) setZoomAtivo(true); }}
+              onMouseLeave={() => {
+                if (zoomAtivo) {
+                  setZoomAtivo(false);
+                  setPosicao({ x: 0, y: 0 });
+                }
+              }}
+              onMouseMove={e => {
+                if (!zoomAtivo) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width - 0.5) * -120;
+                const y = ((e.clientY - rect.top) / rect.height - 0.5) * -120;
+                setPosicao({ x, y });
+              }}
+              onTouchStart={e => {
+                if (!zoomAtivo) { setZoomAtivo(true); return; }
+                setArrastando(true);
+                setTouchInicio({ x: e.touches[0].clientX - posicao.x, y: e.touches[0].clientY - posicao.y });
+              }}
+              onTouchMove={e => {
+                if (!arrastando || !zoomAtivo) return;
+                const x = Math.max(-100, Math.min(100, e.touches[0].clientX - touchInicio.x));
+                const y = Math.max(-100, Math.min(100, e.touches[0].clientY - touchInicio.y));
+                setPosicao({ x, y });
+              }}
+              onTouchEnd={() => setArrastando(false)}
+            >
+              <img
+                src={modal.foto_url}
+                alt={modal.nome}
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'contain',
+                  transform: zoomAtivo
+                    ? `scale(2.2) translate(${posicao.x / 2.2}px, ${posicao.y / 2.2}px)`
+                    : 'scale(1) translate(0,0)',
+                  transition: arrastando ? 'none' : 'transform 0.3s ease',
+                  userSelect: 'none',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Dica de uso */}
+              {!zoomAtivo && (
+                <div style={{
+                  position: 'absolute', bottom: 10, right: 10,
+                  background: 'rgba(255,255,255,0.9)',
+                  border: '1px solid #e8d5a3',
+                  borderRadius: 8, padding: '4px 8px',
+                  fontSize: 11, color: '#8B6914',
+                  pointerEvents: 'none',
+                }}>
+                  🔍 Clique para ampliar
+                </div>
+              )}
+
+              {zoomAtivo && (
+                <div style={{
+                  position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)',
+                  background: 'rgba(255,255,255,0.9)',
+                  border: '1px solid #e8d5a3',
+                  borderRadius: 8, padding: '4px 10px',
+                  fontSize: 11, color: '#8B6914',
+                  pointerEvents: 'none', whiteSpace: 'nowrap',
+                }}>
+                </div>
+              )}
+
+              <button
+                onClick={e => { e.stopPropagation(); setModal(null); setZoomAtivo(false); setPosicao({ x: 0, y: 0 }); }}
+                style={{
+                  position: 'absolute', top: 12, right: 12,
+                  background: 'rgba(255,255,255,0.95)',
+                  border: '1px solid #e8d5a3',
+                  borderRadius: '50%', width: 32, height: 32,
+                  cursor: 'pointer', fontSize: 16, color: '#8B6914',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 10,
+                }}
+              >
+                ✕
+              </button>
             </div>
+
+            {/* Informações */}
             <div style={{ padding: '20px 20px 28px', overflowY: 'auto' }}>
               <span style={{ fontSize: 10, letterSpacing: 2, color: '#C4952A', textTransform: 'uppercase', fontWeight: 600 }}>{modal.categoria}</span>
               <h5 style={{ color: '#3d3020', marginTop: 8, marginBottom: 10, fontSize: 20 }}>{modal.nome}</h5>
               <div style={{ width: 40, height: 1, background: 'linear-gradient(90deg,#C4952A,transparent)', marginBottom: 12 }} />
               <p style={{ color: '#5a4a30', fontSize: 14, lineHeight: 1.7, marginBottom: 16 }}>{modal.descricao}</p>
               <p style={{ color: '#8B6914', fontSize: 26, fontWeight: 700, marginBottom: 20 }}>{modal.preco}</p>
-              <button onClick={() => abrirWA(modal.nome)} style={{ width: '100%', padding: '14px', background: '#25D366', color: '#fff', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+              <button
+                onClick={() => abrirWA(modal.nome)}
+                style={{ width: '100%', padding: '14px', background: '#25D366', color: '#fff', border: 'none', borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+              >
                 {svgWA(18, 'white')} Comprar via WhatsApp
               </button>
             </div>
@@ -202,7 +314,10 @@ export default function Home() {
       )}
 
       {/* Botão flutuante WhatsApp */}
-      <div onClick={() => window.open(`https://wa.me/${WA_NUMBER}`, '_blank')} style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 300, width: 56, height: 56, borderRadius: '50%', background: '#25D366', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,211,102,0.4)' }}>
+      <div
+        onClick={() => window.open(`https://wa.me/${WA_NUMBER}`, '_blank')}
+        style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 300, width: 56, height: 56, borderRadius: '50%', background: '#25D366', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,211,102,0.4)' }}
+      >
         {svgWA(28, 'white')}
       </div>
     </>
